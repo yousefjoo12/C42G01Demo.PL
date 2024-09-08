@@ -1,4 +1,4 @@
-﻿using C42G01Demo.PL.Models;
+﻿using C42G01Demo.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
