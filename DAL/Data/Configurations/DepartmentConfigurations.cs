@@ -15,6 +15,7 @@ namespace DAL.Data.Configurations
 		{
 			//Fluent APIS
 			builder.Property(D=>D.Id).UseIdentityColumn(10,10);
+			builder.Property(D => D.Code).IsRequired();
 		}
 	}
 }
