@@ -8,18 +8,23 @@ using System.Threading.Tasks;
 
 namespace DAL.Data
 {
-	internal class AppDbContext:DbContext
+	public class AppDbContext : DbContext
 	{
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
 		{
-			optionsBuilder.UseSqlServer("Server = . ; Database =C42G01MVC ; Trusted_Connection = True; MultipleActiveResultSets= True;");
+
 		}
+		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		//{
+		//	optionsBuilder.UseSqlServer("Server = . ; Database =C42G01MVC ; Trusted_Connection = True; MultipleActiveResultSets= True;");
+		//}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			//Fluent APIS
 			modelBuilder.ApplyConfigurationsFromAssembly(System.Reflection.Assembly.GetExecutingAssembly());
 			base.OnModelCreating(modelBuilder);
 		}
-		public DbSet<Department> Departments {  get; set; }
+		public DbSet<Department> Departments { get; set; }
+
 	}
 }
