@@ -22,5 +22,10 @@ namespace C42G01Demo.PL.Controllers
 
 			return View(departments);
 		}
+
+		public IActionResult Create()
+		{
+			return View();
+		}
 	}
 }
