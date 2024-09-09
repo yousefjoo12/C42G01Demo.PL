@@ -18,8 +18,9 @@ namespace C42G01Demo.PL.Controllers
 		}
         public IActionResult Index()
 		{
-			_DepartmentRepository.GetAll();	
-			return View();
+		var departments =	_DepartmentRepository.GetAll();	
+
+			return View(departments);
 		}
 	}
 }
