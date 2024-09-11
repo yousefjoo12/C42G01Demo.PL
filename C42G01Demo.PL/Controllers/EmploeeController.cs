@@ -9,12 +9,12 @@ using Microsoft.Extensions.Hosting;
 using System;
 namespace C42G01Demo.PL.Controllers
 {
-	public class EmploeeController : Controller
+	public class EmployeeController : Controller
 	{
 		private readonly IEmploeeRepository _repository;
 		private readonly IWebHostEnvironment _env;
 
-		public EmploeeController(IEmploeeRepository repository, IWebHostEnvironment env)
+		public EmployeeController(IEmploeeRepository repository, IWebHostEnvironment env)
 		{
 			_repository = repository;
 			_env = env;
