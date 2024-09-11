@@ -13,11 +13,12 @@ namespace BLL.Repositories
 	public class DepartmentRepositories : IDepartmentRepository
 	{
 		private readonly AppDbContext _dbContext;
+
 		public DepartmentRepositories(AppDbContext dbContext)
-        {
+		{
 			_dbContext = dbContext;
 		}
-        public int Add(Department department)
+		public int Add(Department department)
 		{
 			_dbContext.Departments.Add(department);
 			return _dbContext.SaveChanges();
@@ -42,7 +43,7 @@ namespace BLL.Repositories
 		public Department GetById(int id)
 		{
 			return _dbContext.Departments.Find(id);
-			
+
 		}
 
 	}
