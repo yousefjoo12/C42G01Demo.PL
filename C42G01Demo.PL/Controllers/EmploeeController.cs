@@ -23,7 +23,12 @@ namespace C42G01Demo.PL.Controllers
 		public IActionResult Index()
 		{
 			var emploee = _repository.GetAll();
-			return View(emploee);
+            //1-ViewData
+            ViewData["Massage"] = "Hello ViewData";
+            //2-ViewBag
+            ViewBag.Massage = "Hello ViewBag";
+
+            return View(emploee);
 		}
 		public IActionResult Create()
 		{
