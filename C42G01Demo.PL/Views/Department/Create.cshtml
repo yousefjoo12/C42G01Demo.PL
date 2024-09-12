@@ -7,20 +7,13 @@
 <br />
 <br />
 <form asp-action="Create">
-    <div>
-        <label class="col-form-label" asp-for="Code"></label>
-        <input type="text" asp-for="Code" class="form-control" />
-        <span asp-validation-for="Code" class="text-danger"></span>
-    </div>
-    <div>
-        <label class="col-form-label" asp-for="Name"></label>
-        <input type="text" asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div>
-        <label class="col-form-label" asp-for="DateOfCreation"></label>
-        <input asp-for="DateOfCreation" class="form-control" />
-    </div>
+    <Partial name="PartialViews/CreateEditDepartmentPartialView"></Partial>
+
     <input type="submit" value="Create" class="btn btn-primary mt-5" />
     <a asp-action="Index" class="btn btn-light mt-5"> Back To List</a>
 </form>
+@section validatesection
+{
+    <Partial name="_ValidationScriptsPartial"></Partial>
+
+}

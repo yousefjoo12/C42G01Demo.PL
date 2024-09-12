@@ -25,7 +25,7 @@ namespace DAL.Models
 
 		[Required(ErrorMessage = "Name Is Required!")]
 		[MaxLength(50, ErrorMessage = "Max Length for Name is 50")]
-		[MinLength(50, ErrorMessage = "Min Length for Name is 4")]
+		[MinLength(4, ErrorMessage = "Min Length for Name is 4")]
 		public string Name { get; set; }
 		[Range(21, 60)]
 		public int? Age { get; set; }

@@ -1,0 +1,79 @@
+﻿@model Employee
+<div class="row">
+	<div class="col-12 col-md-4">
+		<div class="form-group certified-group row">
+			<label class="col-4 col-md-4 align-self-center" asp-for="Name"></label>
+			<div class="col-8 col-md-8">
+				<input type="text" asp-for="Name" class="form-control" readonly /> 
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-4">
+		<div class="form-group certified-group row">
+			<label class="col-4 col-md-4 align-self-center" asp-for="Age"></label>
+			<div class="col-8 col-md-8">
+				<input type="text" asp-for="Age" class="form-control" readonly /> 
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-4">
+		<div class="form-group certified-group row">
+			<label class="col-4 col-md-4 align-self-center" asp-for="Address"></label>
+			<div class="col-8 col-md-8">
+				<input type="text" asp-for="Address" class="form-control" readonly /> 
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 col-md-4">
+		<div class="form-group certified-group row">
+			<label class="col-4 col-md-4 align-self-center" asp-for="HireDate"></label>
+			<div class="col-8 col-md-8">
+				<input asp-for="HireDate" class="form-control" readonly />
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-4">
+		<div class="form-group certified-group row">
+			<label class="col-4 col-md-4 align-self-center" asp-for="Gender"></label>
+			<div class="col-8 col-md-8">
+				<input asp-for="Gender" class="form-control" readonly />
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-4">
+		<div class="form-group certified-group row">
+			<label class="col-4 col-md-4 align-self-center" asp-for="IsDeleted"></label>
+			<div class="col-8 col-md-8">
+				<input asp-for="IsDeleted" class="form-control" readonly />
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 col-md-4">
+		<div class="form-group certified-group row">
+			<label class="col-4 col-md-4 align-self-center" asp-for="PhoneNumber"></label>
+			<div class="col-8 col-md-8">
+				<input asp-for="PhoneNumber" class="form-control" readonly />
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-4">
+		<div class="form-group certified-group row">
+			<label class="col-4 col-md-4 align-self-center" asp-for="Email"></label>
+			<div class="col-8 col-md-8">
+				<input type="text" asp-for="Email" class="form-control" readonly /> 
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-4">
+		<div class="form-group certified-group row">
+			<label class="col-4 col-md-4 align-self-center" asp-for="IsActive"></label>
+			<div class="col-8 col-md-8">
+				<input asp-for="IsActive" class="form-control" readonly />
+			</div>
+		</div>
+	</div>
+</div>
