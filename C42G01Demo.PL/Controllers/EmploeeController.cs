@@ -13,29 +13,42 @@ namespace C42G01Demo.PL.Controllers
 	{
 		private readonly IEmploeeRepository _repository;
 		private readonly IWebHostEnvironment _env;
-        //private readonly IDepartmentRepository _departmentRepository;
+		//private readonly IDepartmentRepository _departmentRepository;
 
-        public EmployeeController(IEmploeeRepository repository, IWebHostEnvironment env/*,IDepartmentRepository departmentRepository*/)
+		public EmployeeController(IEmploeeRepository repository, IWebHostEnvironment env/*,IDepartmentRepository departmentRepository*/)
 		{
 			_repository = repository;
 			_env = env;
-            //_departmentRepository = departmentRepository;
-        }
+			//_departmentRepository = departmentRepository;
+		}
 
-		public IActionResult Index()
+		public IActionResult Index(string searchinp)
 		{
-			var emploee = _repository.GetAll();
-            //1-ViewData
-            ViewData["Massage"] = "Hello ViewData";
-            //2-ViewBag
-            ViewBag.Massage = "Hello ViewBag";
 
-            return View(emploee);
+
+			if (string.IsNullOrEmpty(searchinp))
+			{
+				var emploee = _repository.GetAll();
+				return View(emploee);
+
+			}
+			else
+			{
+				var emploee = _repository.GetEmployeesByName(searchinp.ToLower());
+				return View(emploee);
+
+
+			}
+			////1-ViewData
+			//ViewData["Massage"] = "Hello ViewData";
+			////2-ViewBag
+			//ViewBag.Massage = "Hello ViewBag";
+
 		}
 		public IActionResult Create()
 		{
-			
-            return View();
+
+			return View();
 		}
 		[HttpPost]
 		public IActionResult Create(Employee employees)
@@ -74,9 +87,9 @@ namespace C42G01Demo.PL.Controllers
 				return BadRequest();
 			}
 			var employee = _repository.GetById(id.Value);
-           
 
-            if (employee == null)
+
+			if (employee == null)
 			{
 				return NotFound();
 			}

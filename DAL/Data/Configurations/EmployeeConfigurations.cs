@@ -13,13 +13,16 @@ namespace DAL.Data.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Employee> builder)
 		{
-			builder.Property(E=>E.Salary)
+			builder.Property(E => E.Salary)
 				.HasColumnType("decimal(18,2)");
 			builder.Property(E => E.Gender)
 				.HasConversion(
-				(Gender)=>Gender.ToString(),
-				(GenderAsString)=> (Gender)Enum.Parse(typeof(Gender), GenderAsString,true)
+				(Gender) => Gender.ToString(),
+				(GenderAsString) => (Gender)Enum.Parse(typeof(Gender), GenderAsString, true)
 				);
+			builder.Property(E => E.Name)
+				.IsRequired(true)
+				.HasMaxLength(50);
 		}
 	}
 }

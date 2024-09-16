@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
+
 	public enum Gender
 	{
-		[EnumMember(Value ="Male")]
+		[EnumMember(Value = "Male")]
 		Male = 1,
 		[EnumMember(Value = "Female")]
 		Female = 2
@@ -21,35 +22,28 @@ namespace DAL.Models
 		FullTime = 1,
 		PartTime = 2
 	}
-	public class Employee : ModelBase
+	public class Employee
 	{
 
-		[Required(ErrorMessage = "Name Is Required!")]
-		[MaxLength(50, ErrorMessage = "Max Length for Name is 50")]
-		[MinLength(4, ErrorMessage = "Min Length for Name is 4")]
-		public string Name { get; set; }
-		[Range(21, 60)]
-		public int? Age { get; set; }
-		[RegularExpression(@"^[0-9]{1,3}-[a-zA-Z]{5,10}-[a-zA-Z]{4,10}-[a-zA-Z]{5,10}$",
-			ErrorMessage = "Address Must be like 123-Street-City-Country")]
-		public string Address { get; set; }
-		[DataType(DataType.Currency)]
-		public decimal Salary { get; set; }
-		public bool IsActive { get; set; }//soft delete
 
-		[EmailAddress]
+		public string Name { get; set; }
+
+		public int? Age { get; set; }
+		public string Address { get; set; }
+
+		public decimal Salary { get; set; }
+		public bool IsActive { get; set; }
+
 		public string Email { get; set; }
 		public string PhoneNumber { get; set; }
-		[Display(Name = "Hire Date")]
+
 		public DateTime HireDate { get; set; }
 
-		public bool IsDeleted { get; set; }//soft delete
+		public bool IsDeleted { get; set; }
 		public Gender Gender { get; set; }
 
-		//Navigation property [one] 
-		[InverseProperty(nameof(Models.Department.Employees))]
-        public Department department { get; init; }
-        public int? departmentid { get; init; }
+		public Department department { get; init; }
+		public int? departmentid { get; init; }
 
-    }
+	}
 }

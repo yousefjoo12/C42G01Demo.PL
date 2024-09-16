@@ -3,17 +3,33 @@
 	ViewData["Title"] = "Index";
 }
 
-<div class="alert alert-warning">
+@* <div class="alert alert-warning">
 	@ViewData["Massage"]
 </div>	
 
 <div class="alert alert-success">
 	@ViewBag.Massage
+</div> *@
+
+
+<div class="row justify-content-center align-items-center mt-5">
+	<form class="row col-8 offset-2" asp-action="Index">
+		<div class="col-8">
+			<input type="text" class="from-control" name="searchinp" placeholder="Search By Name"/>
+		</div>
+		<div>
+			<input type="submit" class="btn btn-success" value="Search" />
+		</div>
+	</form>
 </div>
+
+
+
+
+
 <h1>All Employees</h1>
 <br />
-<br />
-
+<br /> 
 <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Create New Employee</a>
 
 

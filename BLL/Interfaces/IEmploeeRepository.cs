@@ -10,5 +10,7 @@ namespace BLL.Interfaces
 	public interface IEmploeeRepository : IGenericRepository<Employee>
 	{
 		IQueryable<Employee> GetEmployeesByAddress(string address);
+		IQueryable<Employee> GetEmployeesByName(string name);
+
 	}
 }
