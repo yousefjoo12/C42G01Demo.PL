@@ -13,12 +13,14 @@ namespace C42G01Demo.PL.Controllers
 	{
 		private readonly IEmploeeRepository _repository;
 		private readonly IWebHostEnvironment _env;
+        //private readonly IDepartmentRepository _departmentRepository;
 
-		public EmployeeController(IEmploeeRepository repository, IWebHostEnvironment env)
+        public EmployeeController(IEmploeeRepository repository, IWebHostEnvironment env/*,IDepartmentRepository departmentRepository*/)
 		{
 			_repository = repository;
 			_env = env;
-		}
+            //_departmentRepository = departmentRepository;
+        }
 
 		public IActionResult Index()
 		{
@@ -32,7 +34,8 @@ namespace C42G01Demo.PL.Controllers
 		}
 		public IActionResult Create()
 		{
-			return View();
+			
+            return View();
 		}
 		[HttpPost]
 		public IActionResult Create(Employee employees)
@@ -71,7 +74,9 @@ namespace C42G01Demo.PL.Controllers
 				return BadRequest();
 			}
 			var employee = _repository.GetById(id.Value);
-			if (employee == null)
+           
+
+            if (employee == null)
 			{
 				return NotFound();
 			}

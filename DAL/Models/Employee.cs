@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -45,6 +46,10 @@ namespace DAL.Models
 		public bool IsDeleted { get; set; }//soft delete
 		public Gender Gender { get; set; }
 
+		//Navigation property [one] 
+		[InverseProperty(nameof(Models.Department.Employees))]
+        public Department department { get; init; }
+        public int? departmentid { get; init; }
 
-	}
+    }
 }

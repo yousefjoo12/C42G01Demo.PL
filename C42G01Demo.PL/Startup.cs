@@ -1,5 +1,6 @@
 using BLL.Interfaces;
 using BLL.Repositories;
+using C42G01Demo.PL.Extensions;
 using DAL.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,8 +35,8 @@ namespace C42G01Demo.PL
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
 
 			});//Default => Scoped
-			services.AddScoped<IDepartmentRepository,DepartmentRepositories>();
-			services.AddScoped<IEmploeeRepository,EmploeeRepository>();
+
+			services.AddApplicationServices();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
