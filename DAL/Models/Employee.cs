@@ -14,6 +14,7 @@ namespace DAL.Models
 	{
 		[EnumMember(Value = "Male")]
 		Male = 1,
+
 		[EnumMember(Value = "Female")]
 		Female = 2
 	}
@@ -22,7 +23,7 @@ namespace DAL.Models
 		FullTime = 1,
 		PartTime = 2
 	}
-	public class Employee
+	public class Employee : ModelBase
 	{
 
 
