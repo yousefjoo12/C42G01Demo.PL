@@ -7,20 +7,25 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Hosting;
 using System;
+using C42G01Demo.PL.ViewModels;
+using AutoMapper;
 namespace C42G01Demo.PL.Controllers
 {
 	public class EmployeeController : Controller
 	{
 		private readonly IEmploeeRepository _repository;
 		private readonly IWebHostEnvironment _env;
-		//private readonly IDepartmentRepository _departmentRepository;
+        private readonly IMapper _mapper;
 
-		public EmployeeController(IEmploeeRepository repository, IWebHostEnvironment env/*,IDepartmentRepository departmentRepository*/)
+        //private readonly IDepartmentRepository _departmentRepository;
+
+        public EmployeeController(IEmploeeRepository repository, IWebHostEnvironment env,IMapper mapper/*,IDepartmentRepository departmentRepository*/)
 		{
 			_repository = repository;
 			_env = env;
-			//_departmentRepository = departmentRepository;
-		}
+            _mapper = mapper;
+            //_departmentRepository = departmentRepository;
+        }
 
 		public IActionResult Index(string searchinp)
 		{
@@ -51,18 +56,20 @@ namespace C42G01Demo.PL.Controllers
 			return View();
 		}
 		[HttpPost]
-		public IActionResult Create(Employee employees)
+		public IActionResult Create(EmployeeViewModels EmployeesVM)
 		{
 			if (ModelState.IsValid)
 			{
-				var count = _repository.Add(employees);
+				var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
+
+				var count = _repository.Add(mappedEmp);
 				if (count > 0)
 				{
 					return RedirectToAction("Index");
 				}
 
 			}
-			return View(employees);
+			return View(EmployeesVM);
 
 		}
 		[HttpGet]

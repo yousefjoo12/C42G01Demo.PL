@@ -1,6 +1,7 @@
 using BLL.Interfaces;
 using BLL.Repositories;
 using C42G01Demo.PL.Extensions;
+using C42G01Demo.PL.Helpers;
 using DAL.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,7 @@ namespace C42G01Demo.PL
 			});//Default => Scoped
 
 			services.AddApplicationServices();
+			services.AddAutoMapper(M => M.AddProfile(new mappingProfiles()));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
