@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using C42G01Demo.PL.ViewModels;
 using AutoMapper;
+using System.Collections;
+using System.Collections.Generic;
 namespace C42G01Demo.PL.Controllers
 {
     public class EmployeeController : Controller
@@ -35,19 +37,36 @@ namespace C42G01Demo.PL.Controllers
             {
                 var emploee = _unitOfWork.EmploeeRepository.GetAll();
                 return View(emploee);
+			if (string.IsNullOrEmpty(searchinp))
+			{
+				var emploee = _repository.GetAll();
+				var mappedemp = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModels>>(emploee);
+				return View(mappedemp);
 
             }
             else
             {
                 var emploee = _unitOfWork.EmploeeRepository.GetEmployeesByName(searchinp.ToLower());
                 return View(emploee);
+			}
+			else
+			{
+				var emploee = _repository.GetEmployeesByName(searchinp.ToLower());
+                var mappedemp = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModels>>(emploee);
 
+                return View(mappedemp);
 
             }
             ////1-ViewData
             //ViewData["Massage"] = "Hello ViewData";
             ////2-ViewBag
             //ViewBag.Massage = "Hello ViewBag";
+
+			}
+			////1-ViewData
+			//ViewData["Massage"] = "Hello ViewData";
+			////2-ViewBag
+			//ViewBag.Massage = "Hello ViewBag";
 
         }
         public IActionResult Create()
@@ -165,4 +184,72 @@ namespace C42G01Demo.PL.Controllers
             }
         }
     }
+			if (employee == null)
+			{
+				return NotFound();
+			}
+			return View(employee);
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Edit([FromRoute] int? id, EmployeeViewModels EmployeesVM)
+		{
+			if (id != EmployeesVM.Id)
+			{
+				return BadRequest();
+			}
+			if (!ModelState.IsValid)
+			{
+				return View(EmployeesVM);
+			}
+			try
+			{
+                var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
+
+                _repository.Update(mappedEmp);
+				return RedirectToAction(nameof(Index));
+			}
+			catch (Exception ex)
+			{
+				if (_env.IsDevelopment())
+				{
+					ModelState.AddModelError(string.Empty, ex.Message);
+				}
+				else
+				{
+					ModelState.AddModelError(string.Empty, "An Error occured during update employee");
+				}
+			}
+			return View(EmployeesVM);
+		}
+		[HttpGet]
+		public IActionResult Delete(int? id)
+		{
+			return Details(id, "Delete");
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Delete(EmployeeViewModels EmployeesVM)
+		{
+			try
+			{
+                var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
+
+                _repository.Delete(mappedEmp);
+				return RedirectToAction(nameof(Index));
+			}
+			catch (Exception ex)
+			{
+				if (_env.IsDevelopment())
+				{
+					ModelState.AddModelError(string.Empty, ex.Message);
+				}
+				else
+				{
+					ModelState.AddModelError(string.Empty, "An Error occured during Delete employee");
+				}
+				return View(EmployeesVM);
+			}
+		}
+	}
 }

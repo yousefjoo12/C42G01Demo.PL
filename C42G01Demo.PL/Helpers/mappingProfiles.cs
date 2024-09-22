@@ -8,7 +8,7 @@ namespace C42G01Demo.PL.Helpers
     {
         public mappingProfiles()
         {
-            CreateMap<EmployeeViewModels, Employee>();
+            CreateMap<EmployeeViewModels, Employee>().ReverseMap();
         }
     }
 }
