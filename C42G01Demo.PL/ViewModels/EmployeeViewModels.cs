@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace C42G01Demo.PL.ViewModels
 {
@@ -49,6 +50,8 @@ namespace C42G01Demo.PL.ViewModels
 		//[InverseProperty(nameof(Models.Department.Employees))]
 		public Department department { get; init; }
 		public int? departmentid { get; init; }
+		public IFormFile Image { get; init; }
+		public string ImageName { get; init; }
 
 	}
 }

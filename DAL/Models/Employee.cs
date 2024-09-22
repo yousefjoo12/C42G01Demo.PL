@@ -46,5 +46,7 @@ namespace DAL.Models
 		public Department department { get; init; }
 		public int? departmentid { get; init; }
 
-	}
+        public string ImageName { get; set; }
+
+    }
 }

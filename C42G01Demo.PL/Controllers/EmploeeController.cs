@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using C42G01Demo.PL.ViewModels;
 using AutoMapper;
+using Microsoft.CodeAnalysis;
+using C42G01Demo.PL.Helpers;
 namespace C42G01Demo.PL.Controllers
 {
     public class EmployeeController : Controller
@@ -60,6 +62,8 @@ namespace C42G01Demo.PL.Controllers
         {
             if (ModelState.IsValid)
             {
+                EmployeesVM.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
+
                 var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
 
                 _unitOfWork.EmploeeRepository.Add(mappedEmp);
@@ -115,6 +119,7 @@ namespace C42G01Demo.PL.Controllers
             }
             try
             {
+                EmployeesVM.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
                 var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
 
                 _unitOfWork.EmploeeRepository.Update(mappedEmp);
