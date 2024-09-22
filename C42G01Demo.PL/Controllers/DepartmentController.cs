@@ -11,21 +11,19 @@ using System;
 namespace C42G01Demo.PL.Controllers
 {
     public class DepartmentController : Controller
-    {
-        private readonly IDepartmentRepository _DepartmentRepository;
+    { 
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
 
         //private readonly IDepartmentRepository _DepartmentRepository;//NULL
-        public DepartmentController(IDepartmentRepository repository, IWebHostEnvironment env)
-        {
-
-            //_DepartmentRepository = repository;
-            _DepartmentRepository = repository;
+        public DepartmentController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
+        {  
+           _unitOfWork = unitOfWork;
             _env = env;
         }
         public IActionResult Index()
         {
-            var departments = _DepartmentRepository.GetAll();
+            var departments = _unitOfWork.DepartmentRepository.GetAll();
 
             return View(departments);
         }
@@ -39,7 +37,8 @@ namespace C42G01Demo.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var count = _DepartmentRepository.Add(department);
+                _unitOfWork.DepartmentRepository.Add(department);
+                var count = _unitOfWork.Complete();
                 if (count > 0)
                 {
                     return RedirectToAction("Index");
@@ -55,7 +54,7 @@ namespace C42G01Demo.PL.Controllers
             {
                 return BadRequest();
             }
-            var department = _DepartmentRepository.GetById(id.Value);
+            var department = _unitOfWork.DepartmentRepository.GetById(id.Value);
             if (department == null)
             {
                 return NotFound();
@@ -69,7 +68,7 @@ namespace C42G01Demo.PL.Controllers
             {
                 return BadRequest();
             }
-            var department = _DepartmentRepository.GetById(id.Value);
+            var department = _unitOfWork.DepartmentRepository.GetById(id.Value);
             if (department == null)
             {
                 return NotFound();
@@ -86,7 +85,7 @@ namespace C42G01Demo.PL.Controllers
             }
             try
             {
-                _DepartmentRepository.Update(department);
+                _unitOfWork.DepartmentRepository.Update(department);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -114,7 +113,8 @@ namespace C42G01Demo.PL.Controllers
         {
             try
             {
-				_DepartmentRepository.Delete(department);
+                _unitOfWork.DepartmentRepository.Delete(department);
+                _unitOfWork.Complete();
 				return RedirectToAction(nameof(Index));
 			}
             catch (Exception ex)

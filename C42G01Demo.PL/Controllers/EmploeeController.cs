@@ -11,149 +11,158 @@ using C42G01Demo.PL.ViewModels;
 using AutoMapper;
 namespace C42G01Demo.PL.Controllers
 {
-	public class EmployeeController : Controller
-	{
-		private readonly IEmploeeRepository _repository;
-		private readonly IWebHostEnvironment _env;
+    public class EmployeeController : Controller
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
 
         //private readonly IDepartmentRepository _departmentRepository;
 
-        public EmployeeController(IEmploeeRepository repository, IWebHostEnvironment env,IMapper mapper/*,IDepartmentRepository departmentRepository*/)
-		{
-			_repository = repository;
-			_env = env;
+        public EmployeeController(IUnitOfWork UnitOfWork, IWebHostEnvironment env, IMapper mapper/*,IDepartmentRepository departmentRepository*/)
+        {
+            _unitOfWork = UnitOfWork;
+            _env = env;
             _mapper = mapper;
             //_departmentRepository = departmentRepository;
         }
 
-		public IActionResult Index(string searchinp)
-		{
+        public IActionResult Index(string searchinp)
+        {
 
 
-			if (string.IsNullOrEmpty(searchinp))
-			{
-				var emploee = _repository.GetAll();
-				return View(emploee);
+            if (string.IsNullOrEmpty(searchinp))
+            {
+                var emploee = _unitOfWork.EmploeeRepository.GetAll();
+                return View(emploee);
 
-			}
-			else
-			{
-				var emploee = _repository.GetEmployeesByName(searchinp.ToLower());
-				return View(emploee);
-
-
-			}
-			////1-ViewData
-			//ViewData["Massage"] = "Hello ViewData";
-			////2-ViewBag
-			//ViewBag.Massage = "Hello ViewBag";
-
-		}
-		public IActionResult Create()
-		{
-
-			return View();
-		}
-		[HttpPost]
-		public IActionResult Create(EmployeeViewModels EmployeesVM)
-		{
-			if (ModelState.IsValid)
-			{
-				var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
-
-				var count = _repository.Add(mappedEmp);
-				if (count > 0)
-				{
-					return RedirectToAction("Index");
-				}
-
-			}
-			return View(EmployeesVM);
-
-		}
-		[HttpGet]
-		public IActionResult Details(int? id, string viewName = "Details")
-		{
-			if (!id.HasValue)
-			{
-				return BadRequest();
-			}
-			var employee = _repository.GetById(id.Value);
-			if (employee == null)
-			{
-				return NotFound();
-			}
-			return View(viewName, employee);
-		}
-		[HttpGet]
-		public IActionResult Edit(int? id)
-		{
-			if (!id.HasValue)
-			{
-				return BadRequest();
-			}
-			var employee = _repository.GetById(id.Value);
+            }
+            else
+            {
+                var emploee = _unitOfWork.EmploeeRepository.GetEmployeesByName(searchinp.ToLower());
+                return View(emploee);
 
 
-			if (employee == null)
-			{
-				return NotFound();
-			}
-			return View(employee);
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult Edit([FromRoute] int? id, Employee employee)
-		{
-			if (!ModelState.IsValid)
-			{
-				return View(employee);
-			}
-			try
-			{
-				_repository.Update(employee);
-				return RedirectToAction(nameof(Index));
-			}
-			catch (Exception ex)
-			{
-				if (_env.IsDevelopment())
-				{
-					ModelState.AddModelError(string.Empty, ex.Message);
-				}
-				else
-				{
-					ModelState.AddModelError(string.Empty, "An Error occured during update employee");
-				}
-			}
-			return View(employee);
-		}
-		[HttpGet]
-		public IActionResult Delete(int? id)
-		{
-			return Details(id, "Delete");
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult Delete(Employee employee)
-		{
-			try
-			{
-				_repository.Delete(employee);
-				return RedirectToAction(nameof(Index));
-			}
-			catch (Exception ex)
-			{
-				if (_env.IsDevelopment())
-				{
-					ModelState.AddModelError(string.Empty, ex.Message);
-				}
-				else
-				{
-					ModelState.AddModelError(string.Empty, "An Error occured during Delete employee");
-				}
-				return View(employee);
-			}
-		}
-	}
+            }
+            ////1-ViewData
+            //ViewData["Massage"] = "Hello ViewData";
+            ////2-ViewBag
+            //ViewBag.Massage = "Hello ViewBag";
+
+        }
+        public IActionResult Create()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(EmployeeViewModels EmployeesVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
+
+                _unitOfWork.EmploeeRepository.Add(mappedEmp);
+                var count = _unitOfWork.Complete();
+                if (count > 0)
+                {
+                    return RedirectToAction("Index");
+                }
+
+            }
+            return View(EmployeesVM);
+
+        }
+        [HttpGet]
+        public IActionResult Details(int? id, string viewName = "Details")
+        {
+            if (!id.HasValue)
+            {
+                return BadRequest();
+            }
+            var employee = _unitOfWork.EmploeeRepository.GetById(id.Value);
+            var mappedEmp = _mapper.Map<Employee, EmployeeViewModels>(employee);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return View(viewName, mappedEmp);
+        }
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return BadRequest();
+            }
+            var employee = _unitOfWork.EmploeeRepository.GetById(id.Value);
+
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return View(employee);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit([FromRoute] int? id, EmployeeViewModels EmployeesVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(EmployeesVM);
+            }
+            try
+            {
+                var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
+
+                _unitOfWork.EmploeeRepository.Update(mappedEmp);
+                _unitOfWork.Complete();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                if (_env.IsDevelopment())
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "An Error occured during update employee");
+                }
+            }
+            return View(EmployeesVM);
+        }
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            return Details(id, "Delete");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(EmployeeViewModels EmployeeVm)
+        {
+            try
+            {
+                var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeeVm);
+
+                _unitOfWork.EmploeeRepository.Delete(mappedEmp);
+                _unitOfWork.Complete();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                if (_env.IsDevelopment())
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "An Error occured during Delete employee");
+                }
+                return View(EmployeeVm);
+            }
+        }
+    }
 }

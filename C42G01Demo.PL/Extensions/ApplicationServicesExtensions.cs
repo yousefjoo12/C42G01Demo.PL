@@ -8,8 +8,10 @@ namespace C42G01Demo.PL.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<IDepartmentRepository, DepartmentRepositories>();
-            services.AddScoped<IEmploeeRepository, EmployeeRepository>();
+           // services.AddScoped<IDepartmentRepository, DepartmentRepositories>();
+           // services.AddScoped<IEmploeeRepository, EmployeeRepository>();
+
+           services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }
