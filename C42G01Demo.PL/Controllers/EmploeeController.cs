@@ -62,7 +62,7 @@ namespace C42G01Demo.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                EmployeesVM.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
+              //  EmployeesVM.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
 
                 var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
 
@@ -119,7 +119,7 @@ namespace C42G01Demo.PL.Controllers
             }
             try
             {
-                EmployeesVM.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
+             //  EmployeesVM.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
                 var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
 
                 _unitOfWork.EmploeeRepository.Update(mappedEmp);
@@ -154,6 +154,7 @@ namespace C42G01Demo.PL.Controllers
 
                 _unitOfWork.EmploeeRepository.Delete(mappedEmp);
                 _unitOfWork.Complete();
+                DocumentSettings.DeleteFile(EmployeeVm.ImageName, "Images");
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
