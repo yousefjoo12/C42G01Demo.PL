@@ -11,6 +11,7 @@ using C42G01Demo.PL.ViewModels;
 using AutoMapper;
 using Microsoft.CodeAnalysis;
 using C42G01Demo.PL.Helpers;
+using System.Collections.Generic;
 namespace C42G01Demo.PL.Controllers
 {
     public class EmployeeController : Controller
@@ -21,36 +22,28 @@ namespace C42G01Demo.PL.Controllers
 
         //private readonly IDepartmentRepository _departmentRepository;
 
-        public EmployeeController(IUnitOfWork UnitOfWork, IWebHostEnvironment env, IMapper mapper/*,IDepartmentRepository departmentRepository*/)
+        public EmployeeController(IUnitOfWork UnitOfWork, IWebHostEnvironment env, IMapper mapper )
         {
             _unitOfWork = UnitOfWork;
             _env = env;
-            _mapper = mapper;
-            //_departmentRepository = departmentRepository;
+            _mapper = mapper; 
         }
-
-        public IActionResult Index(string searchinp)
+         
+        public IActionResult Index(string searchInpt)
         {
+            IEnumerable<Employee> employees;
 
-
-            if (string.IsNullOrEmpty(searchinp))
+            if (string.IsNullOrWhiteSpace(searchInpt))
             {
-                var emploee = _unitOfWork.EmploeeRepository.GetAll();
-                return View(emploee);
-
+                employees = _unitOfWork.EmploeeRepository.GetAll();
             }
             else
             {
-                var emploee = _unitOfWork.EmploeeRepository.GetEmployeesByName(searchinp.ToLower());
-                return View(emploee);
-
-
+                employees = _unitOfWork.EmploeeRepository.GetEmployeesByName(searchInpt.ToLower());
+               
             }
-            ////1-ViewData
-            //ViewData["Massage"] = "Hello ViewData";
-            ////2-ViewBag
-            //ViewBag.Massage = "Hello ViewBag";
-
+            var MappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModels>>(employees);
+            return View(MappedEmployees);
         }
         public IActionResult Create()
         {
