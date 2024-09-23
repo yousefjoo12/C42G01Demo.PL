@@ -3,9 +3,11 @@ using BLL.Repositories;
 using C42G01Demo.PL.Extensions;
 using C42G01Demo.PL.Helpers;
 using DAL.Data;
+using DAL.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +41,20 @@ namespace C42G01Demo.PL
 
 			services.AddApplicationServices();
 			services.AddAutoMapper(M => M.AddProfile(new mappingProfiles()));
+
+			services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+				{
+					config.Password.RequiredUniqueChars = 2;
+					config.Password.RequireDigit = true;
+					config.Password.RequireLowercase = true;
+					config.Password.RequireUppercase = true;
+					config.Password.RequireNonAlphanumeric = true;
+					config.User.RequireUniqueEmail = true;
+					config.Lockout.MaxFailedAccessAttempts = 3;
+					config.Lockout.DefaultLockoutTimeSpan=TimeSpan.FromMinutes(3);
+
+				}).AddEntityFrameworkStores<AppDbContext>();
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
