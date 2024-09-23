@@ -18,6 +18,8 @@ namespace C42G01Demo.PL.Controllers
 			{
 				var user = new IdentityUser()
 				{
+					UserName = ViewModel.Email.Split("@")[0],
+					Email = ViewModel.Email,
 
 				};
 			}
