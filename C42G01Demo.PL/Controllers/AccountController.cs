@@ -46,6 +46,11 @@ namespace C42G01Demo.PL.Controllers
 			}
 			return View(ViewModel);
 		}
+
+		public IActionResult SignIn()
+		{
+			return View();
+		}
 		#endregion
 	}
 }
