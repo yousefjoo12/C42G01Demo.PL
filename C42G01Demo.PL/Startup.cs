@@ -4,6 +4,7 @@ using C42G01Demo.PL.Extensions;
 using C42G01Demo.PL.Helpers;
 using DAL.Data;
 using DAL.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -51,10 +52,24 @@ namespace C42G01Demo.PL
 					config.Password.RequireNonAlphanumeric = true;
 					config.User.RequireUniqueEmail = true;
 					config.Lockout.MaxFailedAccessAttempts = 3;
-					config.Lockout.DefaultLockoutTimeSpan=TimeSpan.FromMinutes(3);
+					config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
 
-				}).AddEntityFrameworkStores<AppDbContext>();
+				}).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+			#region Defaults
+			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+			//	.AddCookie("joo", config =>
+			//	{
+			//		config.LoginPath = "/Account/SignIn";
+			//		config.AccessDeniedPath = "/Home/Error";
+			//	});
+			//services.ConfigureApplicationCookie(config =>
+			//{
+			//	config.LoginPath = "/Account/SignIn";
+			//	config.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+			//});
+
+			#endregion
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,7 +89,7 @@ namespace C42G01Demo.PL
 			app.UseStaticFiles();
 
 			app.UseRouting();
-
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
