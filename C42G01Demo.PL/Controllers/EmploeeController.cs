@@ -22,13 +22,13 @@ namespace C42G01Demo.PL.Controllers
 
         //private readonly IDepartmentRepository _departmentRepository;
 
-        public EmployeeController(IUnitOfWork UnitOfWork, IWebHostEnvironment env, IMapper mapper )
+        public EmployeeController(IUnitOfWork UnitOfWork, IWebHostEnvironment env, IMapper mapper)
         {
             _unitOfWork = UnitOfWork;
             _env = env;
-            _mapper = mapper; 
+            _mapper = mapper;
         }
-         
+
         public IActionResult Index(string searchInpt)
         {
             IEnumerable<Employee> employees;
@@ -40,7 +40,7 @@ namespace C42G01Demo.PL.Controllers
             else
             {
                 employees = _unitOfWork.EmploeeRepository.GetEmployeesByName(searchInpt.ToLower());
-               
+
             }
             var MappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModels>>(employees);
             return View(MappedEmployees);
@@ -55,10 +55,10 @@ namespace C42G01Demo.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-              //  EmployeesVM.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
 
                 var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
 
+                mappedEmp.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
                 _unitOfWork.EmploeeRepository.Add(mappedEmp);
                 var count = _unitOfWork.Complete();
                 if (count > 0)
@@ -112,7 +112,7 @@ namespace C42G01Demo.PL.Controllers
             }
             try
             {
-             //  EmployeesVM.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
+                //  EmployeesVM.ImageName = DocumentSettings.UplodeFile(EmployeesVM.Image, "Images");
                 var mappedEmp = _mapper.Map<EmployeeViewModels, Employee>(EmployeesVM);
 
                 _unitOfWork.EmploeeRepository.Update(mappedEmp);
