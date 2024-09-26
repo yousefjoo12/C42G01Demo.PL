@@ -1,4 +1,5 @@
-﻿using C42G01Demo.PL.ViewModels;
+﻿using C42G01Demo.PL.Helpers;
+using C42G01Demo.PL.ViewModels;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -63,27 +64,89 @@ namespace C42G01Demo.PL.Controllers
 				var user = await _userManager.FindByEmailAsync(viewModel.Email);
 				if (user is not null)
 				{
-					bool flag =await _userManager.CheckPasswordAsync(user, viewModel.Password);
+					bool flag = await _userManager.CheckPasswordAsync(user, viewModel.Password);
 					if (flag)
 					{
 						var result = await _signInManager.PasswordSignInAsync(user, viewModel.Password, viewModel.RememberMe, false);
 						if (result.Succeeded)
 						{
-							return RedirectToAction(nameof(HomeController.Index),"Home");
+							return RedirectToAction(nameof(HomeController.Index), "Home");
 						}
 
 					}
 				}
 				ModelState.AddModelError(string.Empty, "Invalid Login");
 			}
-			return View(viewModel);	
+			return View(viewModel);
 		}
 
-		public async Task<IActionResult> SignOut() 
+		public async Task<IActionResult> SignOut()
 		{
 			await _signInManager.SignOutAsync();
 			return View(nameof(SignIn));
 		}
+
+		public IActionResult ForgetPassword()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel ViewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByEmailAsync(ViewModel.Email);
+				if (user is not null)
+				{
+					var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+					var ResetPasswordUrl = Url.Action("ResetPassword", "Account", new { email = ViewModel.Email, token = token });
+					var email = new Email()
+					{
+						Subject = "Reset Your Password",
+						Reciepints = ViewModel.Email,
+						Body = ResetPasswordUrl
+
+					};
+					EmailSettings.SendEmail(email);
+					return RedirectToAction(nameof(ChackYourInbox));
+				}
+				ModelState.AddModelError(string.Empty, "Invalid Email");
+			}
+			return View(ViewModel);
+		}
+
+		public IActionResult ChackYourInbox()
+		{
+			return View();
+		}
+		public IActionResult ResetPassword(string email ,string token)
+		{
+			TempData["email"] = email;
+			TempData["token"] = token;
+			return View();
+		}
+		[HttpPost]
+		public async Task<IActionResult> ResetPassword(ResetPasswordViewModle viewModle)
+		{
+			if (ModelState.IsValid)
+			{
+				string email = TempData["email"] as string;
+				string token = TempData["token"] as string;
+				var user = await _userManager.FindByEmailAsync(email);
+				var result = await _userManager.ResetPasswordAsync(user, token, viewModle.Password);
+				if (result.Succeeded)
+				{
+					return RedirectToAction(nameof(SignIn));
+				}
+				foreach (var item in result.Errors)
+				{
+					ModelState.AddModelError(string.Empty,item.Description);
+				}
+			}
+			return View(viewModle);
+		}
+
 		#endregion
 	}
 }
