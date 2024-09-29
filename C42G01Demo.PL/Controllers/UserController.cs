@@ -1,4 +1,5 @@
-﻿using C42G01Demo.PL.ViewModels;
+﻿using AutoMapper;
+using C42G01Demo.PL.ViewModels;
 using DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace C42G01Demo.PL.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _mapper = mapper;
         }
         public async Task<IActionResult> Index(string email)
         {
@@ -53,6 +56,21 @@ namespace C42G01Demo.PL.Controllers
                 }
             }
             return View(Enumerable.Empty<UserViewModels>());
+        }
+        [HttpGet]
+        public async Task<IActionResult> Details(string id ,string viewName = "Details")
+        {
+            if (id is null)
+            {
+                BadRequest();
+            }
+            var User =await _userManager.FindByIdAsync(id);
+            if (User is null) 
+            {
+                return NotFound();
+            }
+            var mapperUser = _mapper.Map<ApplicationUser, UserViewModels>(User);
+           return View(viewName,mapperUser);
         }
     }
 }

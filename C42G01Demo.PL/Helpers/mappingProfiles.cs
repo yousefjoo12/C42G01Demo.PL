@@ -9,6 +9,7 @@ namespace C42G01Demo.PL.Helpers
         public mappingProfiles()
         {
             CreateMap<EmployeeViewModels, Employee>().ReverseMap();
+            CreateMap<ApplicationUser, UserViewModels>().ReverseMap();
         }
     }
 }

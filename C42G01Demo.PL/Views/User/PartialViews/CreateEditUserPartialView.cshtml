@@ -1,0 +1,46 @@
+﻿@model UserViewModels
+@inject IUnitOfWork _UnitOfWork
+@{
+    // ViewData["departments"] = _UnitOfWork.GetAll();
+    var departments = new SelectList(_UnitOfWork.DepartmentRepository.GetAll(), nameof(Department.Id), nameof(Department.Name));
+}
+
+<div class="row">
+    <div class="col-12 col-md-4">
+        <div class="form-group certified-group row">
+            <label class="col-4 col-md-4 align-self-center" asp-for="FName"></label>
+            <div class="col-8 col-md-8">
+                <input type="text" asp-for="FName" class="form-control" />
+                <span asp-validation-for="FName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="form-group certified-group row">
+            <label class="col-4 col-md-4 align-self-center" asp-for="LName"></label>
+            <div class="col-8 col-md-8">
+                <input type="text" asp-for="LName" class="form-control" />
+                <span asp-validation-for="LName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="form-group certified-group row">
+            <label class="col-4 col-md-4 align-self-center" asp-for="Email"></label>
+            <div class="col-8 col-md-8">
+                <input type="text" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-md-4">
+        <div class="form-group certified-group row">
+            <label class="col-4 col-md-4 align-self-center" asp-for="PhoneNumbers"></label>
+            <div class="col-8 col-md-8">
+                <input asp-for="PhoneNumbers" class="form-control" />
+            </div>
+        </div>
+    </div>
+</div>
